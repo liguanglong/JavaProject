@@ -32,9 +32,23 @@ public class Main {
          */
         MyService myServiceProxy = (MyService) target.getProxy();
 
+
+        /**
+         * 反编译代理类的字节码：
+         * <pre>
+         * m4 = Class.forName("MyService").getMethod("insert", new Class[0]);
+         * m2 = Class.forName("java.lang.Object").getMethod("toString", new Class[0]);
+         * m3 = Class.forName("MyService").getMethod("add", new Class[] { Integer.TYPE, Integer.TYPE });
+         * </>
+         * 生成的代理类MyServiceProxy实现了MyService接口，并且实现了add（int,int）和insert()方法
+         * 实际调用的时候是用InvocationHandler(本例是target)，并且传入了m4和m3,其中m4和m3是通过*反射*拿到MyService接口中的
+         * add(int,int)和insert()方法
+         *
+         */
         myServiceProxy.add(2, 2);
 
-        ProxyUtils.saveProxyClass("D:\\git\\a.class", "myServiceProxy", myService.getClass().getInterfaces());
+        //保存代理类的字节码
+        ProxyUtils.saveProxyClass("D:\\git\\a.class", "MyServiceProxy", myService.getClass().getInterfaces());
 
     }
 }
