@@ -10,7 +10,7 @@ import java.lang.reflect.Proxy;
 public class MyInvocationHandler implements InvocationHandler{
 
     /**
-     * 代理对象
+     * 目标对象
      */
     private Object target;
 
@@ -36,6 +36,7 @@ public class MyInvocationHandler implements InvocationHandler{
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         System.out.println("Before");
 
+        //反射
         Object result = method.invoke(target,args);
         System.out.println(result);
 

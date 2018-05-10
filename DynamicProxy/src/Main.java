@@ -1,10 +1,20 @@
 import javax.sound.midi.MidiSystem;
+import java.lang.reflect.InvocationHandler;
 
 /**
  * @author LiGuanglong
  * @date 2018/5/9
  */
 public class Main {
+
+    /**
+     * 动态代理五大步骤：
+     * 1通过实现 InvocationHandler 接口创建自己的调用处理器；
+     * 2通过为 Proxy 类指定 ClassLoader 对象和一组 interface 来创建动态代理类；
+     * 3通过反射机制获得动态代理类的构造函数，其唯一参数类型是调用处理器接口类型；
+     * 4通过构造函数创建动态代理类实例，构造时调用处理器对象作为参数被传入。
+     * 5通过代理对象调用目标方法
+     */
 
     public static void main(String[] args) {
 
@@ -16,12 +26,21 @@ public class Main {
 
         System.out.println("---------------------------");
 
-        //实例化InvocationHandler
+        /**
+         * 实例化InvocationHandler调用处理器
+         * 每个代理类都有一个与之关联的InvocationHandler,当在代理实例上调用方法时(如：myServiceProxy.insert())，
+         * 方法调用（insert()）将被编码并分派给InvocationHandler的invoke方法。
+         * InvocationHandler中的invoke方法来执行通过反射获得的insert()方法
+         * InvocationHandler可以实现方法调用从代理类到委托类的分派转发
+         */
         MyInvocationHandler target = new MyInvocationHandler(myService);
 
         /**
-         * 根据目标对象生成代理对象
-         * 注意：使用动态代理的时候,获取的对象是用接口引用的：
+         * 根据目标对象生成代理对象$Proxy0
+         * target.getProxy();返回的是$Proxy0，然后强制转化为MyService
+         * 代理类是final和public的，既所有类都可以访问，但不能继承
+         * 注意：动态代理类只能代理interface，不能代理Class
+         * 使用动态代理的时候,获取的对象是用接口引用的：
          * <pre>
          * MyService myServiceProxy = (MyService) target.getProxy();             RIGHT!!
          * MyServiceImpl myServiceProxy = (MyServiceImpl) target.getProxy();     WRONG!!
@@ -46,9 +65,9 @@ public class Main {
          *
          */
         myServiceProxy.add(2, 2);
+        myServiceProxy.insert();
 
         //保存代理类的字节码
         ProxyUtils.saveProxyClass("D:\\git\\a.class", "MyServiceProxy", myService.getClass().getInterfaces());
-
     }
 }
