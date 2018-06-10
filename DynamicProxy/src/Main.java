@@ -40,6 +40,7 @@ public class Main {
          * target.getProxy();返回的是$Proxy0，然后强制转化为MyService
          * 代理类是final和public的，既所有类都可以访问，但不能继承
          * 注意：动态代理类只能代理interface，不能代理Class
+         * JDK代理要求被代理的类必须实现接口，有很强的局限性。而CGLIB动态代理则没有此类强制性要求
          * 使用动态代理的时候,获取的对象是用接口引用的：
          * <pre>
          * MyService myServiceProxy = (MyService) target.getProxy();             RIGHT!!
@@ -47,7 +48,7 @@ public class Main {
          * <pre/>
          * 字节码查看：Bytecode-Viewer  GitHub:https://github.com/Konloch/bytecode-viewer
          * 反编译生成的代理类的字节码，可以看到代理类继承自Proxy类，并实现了自定义接口（MyService）
-         * 所以如果用实体类来引用返回的代理类的话肯定会报错(本例：MyServiceImpl和Proxy肯定不能相互转换啊)
+         * 所以如果用实体类来引用返回的代理类的话肯定会报错(本例：MyServiceImpl和Proxy肯定不能相互转换啊，虽然都实现了MyService接口)
          */
         MyService myServiceProxy = (MyService) target.getProxy();
 
@@ -66,6 +67,8 @@ public class Main {
          */
         myServiceProxy.add(2, 2);
         myServiceProxy.insert();
+
+
 
         //保存代理类的字节码
         ProxyUtils.saveProxyClass("D:\\git\\a.class", "MyServiceProxy", myService.getClass().getInterfaces());
