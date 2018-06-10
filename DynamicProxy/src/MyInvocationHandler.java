@@ -37,6 +37,7 @@ public class MyInvocationHandler implements InvocationHandler{
         System.out.println("Before");
 
         //反射
+        //restlt是执行目标方法后，目标方法返回的值
         Object result = method.invoke(target,args);
         System.out.println(result);
 
