@@ -11,5 +11,6 @@ public class Main {
         AddBook a = (AddBook) target.getProxy();
 
         a.add();
+
     }
 }

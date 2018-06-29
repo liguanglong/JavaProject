@@ -10,7 +10,6 @@ import java.lang.annotation.*;
  * 自定义注解，模拟spring的Transaction
  */
 
-
 @Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 //如果一个使用了@Inherited修饰的annotation类型被用于一个class，则这个annotation将被用于该class的子类
